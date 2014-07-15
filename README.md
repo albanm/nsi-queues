@@ -111,3 +111,10 @@ Tests
 Require a broker compatible with AMQP<1 and STOMP. For example install and run [rabbitmq](https://www.rabbitmq.com/) with [stomp plugin](http://www.rabbitmq.com/stomp.html).
 
     npm test
+
+TODO
+----
+
+  * Support [zeromq](http://zeromq.org/) ?
+  * Support JSON content-type allowing to send and receive objects instead of strings.
+  * More complete tests including error management.
