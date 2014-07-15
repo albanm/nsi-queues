@@ -21,7 +21,7 @@ Usage
 
 Initialize a queues helper with a [node-amqp connection](https://github.com/postwait/node-amqp):
 
-```node
+```js
 var amqp = require('amqp');
 var nsiQueues = require('nsi-queues');
 
