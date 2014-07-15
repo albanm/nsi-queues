@@ -1,7 +1,7 @@
 {
   "name": "nsi-queues",
-  "version": "0.0.0",
-  "description": "Useful shortcuts for easy interactions with message brokers queues",
+  "version": "0.0.1",
+  "description": "Node Simple Integration - Queues helpers",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -12,9 +12,10 @@
   "keywords": [
     "Queues",
     "AMQP",
+    "STOMP",
     "integration"
   ],
-  "author": "Alban Mouton",
+  "author": "Alban Mouton <alban.mouton@gmail.com>",
   "license": "BSD-2-Clause",
   "dependencies": {
     "node-uuid": "~1.4.1",
