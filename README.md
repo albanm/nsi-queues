@@ -35,7 +35,7 @@ amqpConnection.on('ready', function(){
 
 Initialize a queues helper with a [stomp-js](https://github.com/benjaminws/stomp-js) client:
 
-```node
+```js
 var stomp = require('stomp');
 var nsiQueues = require('nsi-queues');
 
@@ -59,7 +59,7 @@ The headers parameter can be omitted.
 The callback is executed when the broker acknowledges reception of the message.
 The message and headers parameters of the callback are just copies of the original parameters as no response is expected when using to().
 
-```node
+```js
 queuesHelper.to('my-queue', 'my message', {header1: 'header1'}, function(err, message, headers) {
 	if (err) console.log('Message sending failed.');
 	else console.log('Message was sent and acknowledged !');
@@ -70,7 +70,7 @@ Send messages to a queue, and expects a response, using inOut().
 The headers parameter can be omitted.
 The callback is executed when the response is received or if an error occured when sending the message.
 
-```node
+```js
 queuesHelper.inOut('my-queue', 'my message', {header1: 'header1'}, function(err, message, headers) {
 	if (err) console.log('Message sending failed.');
 	else console.log('Response received: ' + message);
@@ -81,7 +81,7 @@ Expect messages from a queue and acknowledge reception to the broker using from(
 The acknowledgement callback takes an optional error parameter.
 from() takes a second optional parameter: a callback function that will be executed once subscription to the broker is effective.
 
-```node
+```js
 queuesHelper.from('my-queue', function(err, message, headers, ackCallback) {
 	// do something with message
 	ackCallback(); // acknowlege reception to the broker
@@ -91,7 +91,7 @@ queuesHelper.from('my-queue', function(err, message, headers, ackCallback) {
 Expect messages from a queue and send responses using from().
 The responseCallback takes an optional fourth parameter: a callback that is executed when the broker acknowledges reception of the response message.
 
-```node
+```js
 queuesHelper.from('my-queue', function(err, message, headers, responseCallback) {
 	// do something with message and prepare response
 	responseCallback(null, responseMessage, responseHeaders);
@@ -101,7 +101,7 @@ queuesHelper.from('my-queue', function(err, message, headers, responseCallback) 
 Use [async](https://github.com/caolan/async) for advance control flow.
 This lame example sends a message on 3 different queues and waits for all 3 acknowledgements to run its callback.
 
-```node	
+```js	
 function myRoute(message, headers, callback) {
 	async.parallel([
 	    function(callback){
