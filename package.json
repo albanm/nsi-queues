@@ -1,0 +1,30 @@
+{
+  "name": "nsi-queues",
+  "version": "0.0.0",
+  "description": "Useful shortcuts for easy interactions with message brokers queues",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha -t 20000 -R spec"
+  },
+  "keywords": [
+    "Queues",
+    "AMQP",
+    "integration"
+  ],
+  "author": "Alban Mouton",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "node-uuid": "~1.4.1",
+    "lodash": "~2.4.1",
+    "lodash-deep": "~1.2.1"
+  },
+  "devDependencies": {
+    "should": "~4.0.4",
+    "amqp": "~0.2.0",
+    "stomp": "xFragger/stomp-js",
+    "mocha": "~1.20.1"
+  }
+}
