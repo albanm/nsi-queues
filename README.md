@@ -5,7 +5,7 @@ nsi-queues
 
 **Warning**: This project is very young and its test coverage is still incomplete. Feel free to use, but expect some quirks.
 
-This project will provide an uniform and easy way to send and receive messages using queues.
+This project will provide an uniform and easy way to send and receive messages in [node.js](http://nodejs.org/) using queues.
 It should be compatible with all possible major protocols and brokers.
 
 The interface is based on asynchronous functions with callback passing for responses, acknowledgement, etc.
