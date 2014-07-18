@@ -1,7 +1,7 @@
 nsi-queues
 ==========
 
-*Node.js Simple Integration - Queues helpers*
+*Node.js Services Integration - Queues helpers*
 
 **Warning**: This project is very young and its test coverage is still incomplete. Feel free to use, but expect some quirks.
 

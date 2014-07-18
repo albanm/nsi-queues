@@ -15,4 +15,6 @@ module.exports = function(connection, callback) {
 	}
 	// bind all functions to the queues manager so that they can be passed by reference
 	_.bindAll(queuesManager);
+
+	return queuesManager;
 };
