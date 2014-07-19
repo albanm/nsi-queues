@@ -78,6 +78,7 @@ nsiQueues('stomp', {}, function(err, queuesHelper){
 	// active stomp client can be accessed here:
 	console.log(queuesHelper.client)
 });
+```
 
 Send messages to a queue, without expecting a response, using to().
 The headers parameter can be omitted.
