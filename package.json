@@ -1,7 +1,7 @@
 {
   "name": "nsi-queues",
   "version": "0.0.1",
-  "description": "Node Simple Integration - Queues helpers",
+  "description": "Node.js Services Integration - Queues helpers",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -20,12 +20,12 @@
   "dependencies": {
     "node-uuid": "~1.4.1",
     "lodash": "~2.4.1",
-    "lodash-deep": "~1.2.1"
+    "lodash-deep": "~1.2.1",
+    "amqp": "~0.2.0",
+    "stomp": "xFragger/stomp-js"
   },
   "devDependencies": {
     "should": "~4.0.4",
-    "amqp": "~0.2.0",
-    "stomp": "xFragger/stomp-js",
     "mocha": "~1.20.1"
   }
 }

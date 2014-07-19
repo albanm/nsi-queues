@@ -19,7 +19,7 @@ Install
 Usage
 -----
 
-Initialize a queues helper with a [node-amqp connection](https://github.com/postwait/node-amqp):
+Initialize a queues helper with a [node-amqp](https://github.com/postwait/node-amqp) connection.
 
 ```js
 var amqp = require('amqp');
@@ -27,13 +27,26 @@ var nsiQueues = require('nsi-queues');
 
 var amqpConnection = amqp.createConnection();
 amqpConnection.on('ready', function(){
-	var queuesHelper = nsiQueues(amqpConnectionProducer, function(err){
+	nsiQueues('amqp', amqpConnectionProducer, function(err, queuesHelper){
 		// connection is active and queues helper is ready !
 	});
 });
 ```
 
-Initialize a queues helper with a [stomp-js](https://github.com/benjaminws/stomp-js) client:
+Use a shortcut to let the helper create its own connection. The second parameter is the options object for a [node-amqp](https://github.com/postwait/node-amqp) connection.
+
+```js
+var nsiQueues = require('nsi-queues');
+
+nsiQueues('amqp', {}, function(err, queuesHelper){
+	// queues helper is ready !
+	// active amqp connection can be accessed here:
+	console.log(queuesHelper.connection)
+});
+```
+
+
+Initialize a queues helper with a [stomp-js](https://github.com/benjaminws/stomp-js) client.
 
 ```js
 var stomp = require('stomp');
@@ -48,11 +61,23 @@ var stompClient = new stomp.Stomp({
 });
 stompClient.connect();
 stompClient.on('connected', function(){
-	var queuesHelper = nsiQueues(stompClient, function(err){
+	nsiQueues('stomp', stompClient, function(err, queuesHelper){
 		// connection is active and queues helper is ready !
 	});
 });
 ```
+
+Use a shortcut to let the helper create its own client. The second parameter is the options object for a [stomp-js](https://github.com/benjaminws/stomp-js) client.
+
+
+```js
+var nsiQueues = require('nsi-queues');
+
+nsiQueues('stomp', {}, function(err, queuesHelper){
+	// queues helper is ready !
+	// active stomp client can be accessed here:
+	console.log(queuesHelper.client)
+});
 
 Send messages to a queue, without expecting a response, using to().
 The headers parameter can be omitted.

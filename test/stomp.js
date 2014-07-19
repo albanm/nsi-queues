@@ -5,8 +5,8 @@ var prepareQueues = require('../');
 var commonTests = require('./common');
 
 describe('queues helper based on STOMP clients', function() {
+	// 2 stomp queues helpers are created, the first one is created from a client
 	var stompClientProducer;
-	var stompClientConsumer;
 	before(function(callback) {
 		stompClientProducer = new stomp.Stomp({
 			port: 61613,
@@ -19,24 +19,20 @@ describe('queues helper based on STOMP clients', function() {
 		stompClientProducer.on('connected', callback);
 	});
 	before(function(callback) {
-		stompClientConsumer = new stomp.Stomp({
-			port: 61613,
-			host: 'localhost',
-			debug: false,
-			login: 'guest',
-			passcode: 'guest',
+		prepareQueues('stomp', stompClientProducer, function(err, helper) {
+			global.producer = helper;
+			callback();
 		});
-		stompClientConsumer.connect();
-		stompClientConsumer.on('connected', callback);
 	});
+	// the other one will create its own connection
 	before(function(callback) {
-		global.producer = prepareQueues(stompClientProducer, callback);
-	});
-	before(function(callback) {
-		global.consumer = prepareQueues(stompClientConsumer, callback);
+		prepareQueues('stomp', {}, function(err, helper) {
+			global.consumer = helper;
+			callback();
+		});
 	});
 	after(function() {
-		stompClientConsumer.disconnect();
+		global.consumer.client.disconnect();
 		stompClientProducer.disconnect();
 	});
 	it('should have created AMQP queues managers', function() {
