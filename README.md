@@ -92,7 +92,7 @@ queuesHelper.to('my-queue', 'my message', {header1: 'header1'}, function(err, me
 });
 ```
 
-Send messages to a queue, and expects a response, using inOut().
+Send messages to a queue, and expect a response, using inOut().
 The headers parameter can be omitted.
 The callback is executed when the response is received or if an error occured when sending the message.
 
