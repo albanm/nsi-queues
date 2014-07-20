@@ -25,6 +25,19 @@ module.exports = function(queuePrefix) {
 			});
 		});
 
+		it('should send an object as JSON "to"', function(callback) {
+			queue1Callback = function(err, message, headers) {
+				if (err) return callback(err);
+				message.should.have.property('id', 'test');
+				callback();
+			};
+			producer.to(queuePrefix + '-my-queue1', {
+				id: 'test'
+			}, function(err) {
+				if (err) callback(err);
+			});
+		});
+
 		it('should send many messages using "to"', function(callback) {
 			var ct = 0;
 			queue1Callback = function(err, message, headers) {
