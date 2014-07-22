@@ -105,5 +105,23 @@ module.exports = function(queuePrefix) {
 				callback();
 			});
 		});
+
+		it('should send a message expecting a response as an object using "inOut"', function(callback) {
+			// prepare receiving the message
+			queueResponseCallback = function(err, message, headers, responseCallback) {
+				if (err) return callback(err);
+				message.should.equal('this message expects a response');
+				// Send the response
+				responseCallback(null, {
+					id: 'response'
+				});
+			};
+			producer.inOut(queuePrefix + '-my-queue3', 'this message expects a response', function(err, message, headers) {
+				if (err) callback(err);
+				// Expect to have received the response in callback
+				message.should.have.property('id', 'response');
+				callback();
+			});
+		});
 	});
 };
