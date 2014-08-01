@@ -16,8 +16,39 @@ Install
 
 	npm install nsi-queues
 
-Usage
------
+Basic usage
+-----------
+
+Initialize a connection then forward messages from a queue to another.
+Acknowledge reception of a message only when it is successfully transmitted.
+
+```js
+var nsiQueues = require('nsi-queues');
+
+nsiQueues('amqp', {}, function(err, queuesHelper){
+	queuesHelper.from('my-receiving-queue', function(body, headers, ackCallback) {
+		queuesHelper.to('my-destination-queue', body, headers, ackCallback);
+	})
+});
+```
+
+The body of the message can be a string or an object.
+If it is an object the 'content-type' header will be set to 'application/json'.
+
+Initialize AMQP connections
+---------------------------
+
+Initialize a queues helper for amqp message passing. The second parameter is the options object for a [node-amqp](https://github.com/postwait/node-amqp) connection.
+
+```js
+var nsiQueues = require('nsi-queues');
+
+nsiQueues('amqp', {}, function(err, queuesHelper){
+	// queues helper is ready !
+	// active amqp connection can be accessed here:
+	console.log(queuesHelper.connection)
+});
+```
 
 Initialize a queues helper with a [node-amqp](https://github.com/postwait/node-amqp) connection.
 
@@ -33,18 +64,20 @@ amqpConnection.on('ready', function(){
 });
 ```
 
-Use a shortcut to let the helper create its own connection. The second parameter is the options object for a [node-amqp](https://github.com/postwait/node-amqp) connection.
+Initialize STOMP connections
+----------------------------
+
+Initialize a queues helper for stomp message passing. The second parameter is the options object for a [stomp-js](https://github.com/benjaminws/stomp-js) client.
 
 ```js
 var nsiQueues = require('nsi-queues');
 
-nsiQueues('amqp', {}, function(err, queuesHelper){
+nsiQueues('stomp', {}, function(err, queuesHelper){
 	// queues helper is ready !
-	// active amqp connection can be accessed here:
-	console.log(queuesHelper.connection)
+	// active stomp client can be accessed here:
+	console.log(queuesHelper.client)
 });
 ```
-
 
 Initialize a queues helper with a [stomp-js](https://github.com/benjaminws/stomp-js) client.
 
@@ -66,19 +99,8 @@ stompClient.on('connected', function(){
 	});
 });
 ```
-
-Use a shortcut to let the helper create its own client. The second parameter is the options object for a [stomp-js](https://github.com/benjaminws/stomp-js) client.
-
-
-```js
-var nsiQueues = require('nsi-queues');
-
-nsiQueues('stomp', {}, function(err, queuesHelper){
-	// queues helper is ready !
-	// active stomp client can be accessed here:
-	console.log(queuesHelper.client)
-});
-```
+Send message
+------------
 
 Send messages to a queue, without expecting a response, using to().
 The headers parameter can be omitted.
@@ -86,7 +108,7 @@ The callback is executed when the broker acknowledges reception of the message.
 The message and headers parameters of the callback are just copies of the original parameters as no response is expected when using to().
 
 ```js
-queuesHelper.to('my-queue', 'my message', {header1: 'header1'}, function(err, message, headers) {
+queuesHelper.to('my-queue', 'my message', {header1: 'header1'}, function(err, body, headers) {
 	if (err) console.log('Message sending failed.');
 	else console.log('Message was sent and acknowledged !');
 });
@@ -97,18 +119,20 @@ The headers parameter can be omitted.
 The callback is executed when the response is received or if an error occured when sending the message.
 
 ```js
-queuesHelper.inOut('my-queue', 'my message', {header1: 'header1'}, function(err, message, headers) {
+queuesHelper.inOut('my-queue', 'my message', {header1: 'header1'}, function(err, body, headers) {
 	if (err) console.log('Message sending failed.');
-	else console.log('Response received: ' + message);
+	else console.log('Response received: ' + body);
 });
 ```
+Receive messages
+----------------
 
 Expect messages from a queue and acknowledge reception to the broker using from().
 The acknowledgement callback takes an optional error parameter.
 from() takes a second optional parameter: a callback function that will be executed once subscription to the broker is effective.
 
 ```js
-queuesHelper.from('my-queue', function(err, message, headers, ackCallback) {
+queuesHelper.from('my-queue', function(err, body, headers, ackCallback) {
 	// do something with message
 	ackCallback(); // acknowlege reception to the broker
 });
@@ -118,29 +142,32 @@ Expect messages from a queue and send responses using from().
 The responseCallback takes an optional fourth parameter: a callback that is executed when the broker acknowledges reception of the response message.
 
 ```js
-queuesHelper.from('my-queue', function(err, message, headers, responseCallback) {
+queuesHelper.from('my-queue', function(body, headers, responseCallback) {
 	// do something with message and prepare response
-	responseCallback(null, responseMessage, responseHeaders);
+	responseCallback(null, responseBody, responseHeaders);
 });
 ```
+
+Control flow
+------------
 
 Use [async](https://github.com/caolan/async) for advance control flow.
 This lame example sends a message on 3 different queues and waits for all 3 acknowledgements to run its callback.
 
 ```js	
-function myRoute(message, headers, callback) {
+function myRoute(body, headers, callback) {
 	async.parallel([
 	    function(callback){
-	        queuesHelper.to('queue1', message, headers, callback);
+	        queuesHelper.to('queue1', body, headers, callback);
 	    },
 	    function(callback){
-	        queuesHelper.to('queue2', message, headers, callback);
+	        queuesHelper.to('queue2', body, headers, callback);
 	    },
 	    function(callback){
-	        queuesHelper.to('queue3', message, headers, callback);
+	        queuesHelper.to('queue3', body, headers, callback);
 	    }
 	], function (err) {
-	   callback(err, message, headers);
+	   callback(err, body, headers);
 	});	
 }
 ```
@@ -156,6 +183,5 @@ TODO
 ----
 
   * Support [zeromq](http://zeromq.org/) ?
-  * Support JSON content-type allowing to send and receive objects instead of strings.
   * More complete tests including error management.
 
