@@ -22,7 +22,7 @@
     "lodash": "~2.4.1",
     "lodash-deep": "~1.2.1",
     "amqp": "~0.2.0",
-    "stomp": "xFragger/stomp-js"
+    "stomp": "albanm/stomp-js"
   },
   "devDependencies": {
     "should": "~4.0.4",

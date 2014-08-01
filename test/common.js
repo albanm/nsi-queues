@@ -5,15 +5,14 @@ module.exports = function(queuePrefix) {
 
 		var queue1Callback;
 		it('should subscribe to a queue using "from"', function(callback) {
-			consumer.from(queuePrefix + '-my-queue1', callback, function(err, message, headers, ackCallback) {
-				if (queue1Callback) queue1Callback(err, message, headers);
+			consumer.from(queuePrefix + '-my-queue1', callback, function(message, headers, ackCallback) {
+				if (queue1Callback) queue1Callback(message, headers);
 				ackCallback();
 			});
 		});
 
 		it('should send a simple message using "to"', function(callback) {
-			queue1Callback = function(err, message, headers) {
-				if (err) return callback(err);
+			queue1Callback = function(message, headers) {
 				message.should.equal('test message');
 				headers.should.have.property('header1', 'header1');
 				callback();
@@ -26,8 +25,7 @@ module.exports = function(queuePrefix) {
 		});
 
 		it('should send an object as JSON "to"', function(callback) {
-			queue1Callback = function(err, message, headers) {
-				if (err) return callback(err);
+			queue1Callback = function(message, headers) {
 				message.should.have.property('id', 'test');
 				callback();
 			};
@@ -40,8 +38,7 @@ module.exports = function(queuePrefix) {
 
 		it('should send many messages using "to"', function(callback) {
 			var ct = 0;
-			queue1Callback = function(err, message, headers) {
-				if (err) return callback(err);
+			queue1Callback = function(message, headers) {
 				message.should.equal('test message 2');
 				ct += 1;
 				if (ct >= 10) callback();
@@ -60,18 +57,17 @@ module.exports = function(queuePrefix) {
 
 		var queue2Callback;
 		it('should subscribe to a second queue using "from"', function(callback) {
-			consumer.from(queuePrefix + '-my-queue2', callback, function(err, message, headers, ackCallback) {
-				if (queue2Callback) queue2Callback(err, message, headers);
+			consumer.from(queuePrefix + '-my-queue2', callback, function(message, headers, ackCallback) {
+				if (queue2Callback) queue2Callback(message, headers);
 				ackCallback();
 			});
 		});
 
 		it('should send a message only to the requested queue', function(callback) {
-			queue1Callback = function(err, message, headers) {
+			queue1Callback = function(message, headers) {
 				callback(new Error('Queue 1 should not receive anything'));
 			};
-			queue2Callback = function(err, message, headers) {
-				if (err) return callback(err);
+			queue2Callback = function(message, headers) {
 				message.should.equal('test message 3');
 				callback();
 			};
@@ -83,8 +79,8 @@ module.exports = function(queuePrefix) {
 
 		var queueResponseCallback;
 		it('should subscribe to a third queue ready to send responses', function(readyCallback) {
-			consumer.from(queuePrefix + '-my-queue3', readyCallback, function(err, message, headers, responseCallback) {
-				if (queueResponseCallback) queueResponseCallback(err, message, headers, responseCallback);
+			consumer.from(queuePrefix + '-my-queue3', readyCallback, function(message, headers, responseCallback) {
+				if (queueResponseCallback) queueResponseCallback(null, message, headers, responseCallback);
 			});
 		});
 		it('should send a message expecting a response using "inOut"', function(callback) {
