@@ -171,7 +171,12 @@ function myRoute(body, headers, callback) {
 	});	
 }
 ```
-	
+
+Brokers compatibility
+---------------------
+
+Validated only against [rabbitmq](https://www.rabbitmq.com/) with [stomp plugin](http://www.rabbitmq.com/stomp.html) for now.
+
 Tests
 -----
 
