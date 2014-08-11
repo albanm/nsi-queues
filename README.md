@@ -40,7 +40,8 @@ If it is an object the 'content-type' header will be set to 'application/json'.
 Initialize AMQP connections
 ---------------------------
 
-Initialize a queues helper for amqp message passing. The second parameter is the options object for a [node-amqp](https://github.com/postwait/node-amqp) connection.
+Initialize a queues helper for amqp message passing.
+The second parameter is the options object for a [node-amqp](https://github.com/postwait/node-amqp) connection.
 
 ```js
 var nsiQueues = require('nsi-queues');
@@ -69,7 +70,8 @@ amqpConnection.on('ready', function(){
 Initialize STOMP connections
 ----------------------------
 
-Initialize a queues helper for stomp message passing. The second parameter is the options object for a [stomp-js](https://github.com/benjaminws/stomp-js) client.
+Initialize a queues helper for stomp message passing.
+The second parameter is the options object for a [stomp-js](https://github.com/benjaminws/stomp-js) client.
 
 ```js
 var nsiQueues = require('nsi-queues');
@@ -101,13 +103,14 @@ stompClient.on('connected', function(){
 	});
 });
 ```
-Send message
-------------
+Send messages
+-------------
 
-Send messages to a queue, without expecting a response, using to().
-The headers parameter can be omitted.
-The callback is executed when the broker acknowledges reception of the message.
-The message and headers parameters of the callback are just copies of the original parameters as no response is expected when using to().
+Send messages to a queue, without expecting a response, using **to()**.
+
+  - The headers parameter can be omitted.
+  - The callback is executed when the broker acknowledges reception of the message.
+  - The message and headers parameters of the callback are the same as the original parameters as no response is expected when using to().
 
 ```js
 queuesHelper.to('my-queue', 'my message', {header1: 'header1'}, function(err, body, headers) {
@@ -116,9 +119,10 @@ queuesHelper.to('my-queue', 'my message', {header1: 'header1'}, function(err, bo
 });
 ```
 
-Send messages to a queue, and expect a response, using inOut().
-The headers parameter can be omitted.
-The callback is executed when the response is received or if an error occured when sending the message.
+Send messages to a queue, and expect a response, using **inOut()**.
+
+  - The headers parameter can be omitted.
+  - The callback is executed when the response is received or if an error occured when sending the message.
 
 ```js
 queuesHelper.inOut('my-queue', 'my message', {header1: 'header1'}, function(err, body, headers) {
@@ -129,9 +133,10 @@ queuesHelper.inOut('my-queue', 'my message', {header1: 'header1'}, function(err,
 Receive messages
 ----------------
 
-Expect messages from a queue and acknowledge reception to the broker using from().
-The acknowledgement callback takes an optional error parameter.
-from() takes a second optional parameter: a callback function that will be executed once subscription to the broker is effective.
+Expect messages from a queue and acknowledge reception to the broker using **from()**.
+
+  - The acknowledgement callback takes an optional error parameter.
+  - from() takes a second optional parameter: a callback function that will be executed once subscription to the broker is effective.
 
 ```js
 queuesHelper.from('my-queue', function(err, body, headers, ackCallback) {
@@ -140,8 +145,9 @@ queuesHelper.from('my-queue', function(err, body, headers, ackCallback) {
 });
 ```
 
-Expect messages from a queue and send responses using from().
-The responseCallback takes an optional fourth parameter: a callback that is executed when the broker acknowledges reception of the response message.
+Expect messages from a queue and send responses using **from()**.
+
+  - The responseCallback takes an optional fourth parameter: a callback that is executed when the broker acknowledges reception of the response message.
 
 ```js
 queuesHelper.from('my-queue', function(body, headers, responseCallback) {
@@ -153,7 +159,8 @@ queuesHelper.from('my-queue', function(body, headers, responseCallback) {
 Control flow
 ------------
 
-Use [async](https://github.com/caolan/async) for advance control flow.
+Use [async](https://github.com/caolan/async) for advanced control flow.
+
 This lame example sends a message on 3 different queues and waits for all 3 acknowledgements to run its callback.
 
 ```js	
