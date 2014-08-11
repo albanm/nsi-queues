@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha -t 20000 -R spec"
+    "test": "mocha -t 20000 -R spec --grep AMQP"
   },
   "keywords": [
     "Queues",

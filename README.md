@@ -177,18 +177,24 @@ function myRoute(body, headers, callback) {
 Brokers compatibility
 ---------------------
 
-Validated only against [rabbitmq](https://www.rabbitmq.com/) with [stomp plugin](http://www.rabbitmq.com/stomp.html) for now.
+AMQP helper tested with:
+
+  - [rabbitmq](https://www.rabbitmq.com/)
+
+STOMP helper tested with:
+
+  - [rabbitmq stomp plugin](http://www.rabbitmq.com/stomp.html)
+
 
 Tests
 -----
 
-Require a broker compatible with AMQP<1 and STOMP. For example install and run [rabbitmq](https://www.rabbitmq.com/) with [stomp plugin](http://www.rabbitmq.com/stomp.html).
+The test suite covers both AMQP and STOMP helpers.
+Therefore it requires a broker compatible with AMQP<1 and STOMP.
+For example install and run [rabbitmq](https://www.rabbitmq.com/) with [stomp plugin](http://www.rabbitmq.com/stomp.html).
+
+    mocha -t 20000 -R spec
+
+The project is integrated with [travis-ci](https://travis-ci.org/) which only supports a bare installation of [rabbitmq](https://www.rabbitmq.com/). So the default test command only runs the tests for AMQP helper.
 
     npm test
-
-TODO
-----
-
-  * Support [zeromq](http://zeromq.org/) ?
-  * More complete tests including error management.
-
