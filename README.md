@@ -1,9 +1,11 @@
 nsi-queues
 ==========
 
-*Node.js Services Integration - Queues helpers*
+[![Build status](https://travis-ci.org/albanm/nsi-queues.svg)](https://travis-ci.org/albanm/nsi-queues)
+[![Code Climate](https://codeclimate.com/github/albanm/nsi-queues/badges/gpa.svg)](https://codeclimate.com/github/albanm/nsi-queues)
+[![NPM version](https://badge.fury.io/js/nsi-queues.svg)](http://badge.fury.io/js/nsi-queues)
 
-**Warning**: This project is very young and its test coverage is still incomplete. Feel free to use, but expect some quirks.
+*Node.js Services Integration - Queues helpers*
 
 This project will provide an uniform and easy way to send and receive messages in [node.js](http://nodejs.org/) using queues.
 It should be compatible with all possible major protocols and brokers.
