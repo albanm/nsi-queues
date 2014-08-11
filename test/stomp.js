@@ -35,7 +35,7 @@ describe('queues helper based on STOMP clients', function() {
 		global.consumer.client.disconnect();
 		stompClientProducer.disconnect();
 	});
-	it('should have created AMQP queues managers', function() {
+	it('should have created STOMP queues managers', function() {
 		should.equal(producer.constructor.name, 'STOMPQueuesManager');
 		should.equal(consumer.constructor.name, 'STOMPQueuesManager');
 	});
