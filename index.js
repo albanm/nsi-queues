@@ -7,14 +7,13 @@ var AMQPQueuesManager = require('./lib/amqp');
 var STOMPQueuesManager = require('./lib/stomp');
 
 module.exports = function(protocol, connection, callback) {
-	var queuesManager;
 	// case where an amqp connection is given already prepared
 	if (protocol === 'amqp' && _.deepGet(connection, 'options.clientProperties.product') === 'node-amqp') {
 		new AMQPQueuesManager(connection, callback);
 	}
 	// case where the amqp connection should be initialized here
 	else if (protocol === 'amqp') {
-		amqpConnection = amqp.createConnection(connection);
+		var amqpConnection = amqp.createConnection(connection);
 		amqpConnection.on('ready', function() {
 			new AMQPQueuesManager(amqpConnection, callback);
 		});
