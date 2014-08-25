@@ -14,7 +14,7 @@ module.exports = function(protocol, connection, callback) {
 	// case where the amqp connection should be initialized here
 	else if (protocol === 'amqp') {
 		var amqpConnection = amqp.createConnection(connection);
-		amqpConnection.on('ready', function() {
+		amqpConnection.once('ready', function() {
 			new AMQPQueuesManager(amqpConnection, callback);
 		});
 	}
@@ -33,7 +33,7 @@ module.exports = function(protocol, connection, callback) {
 		}, connection);
 		var stompClient = new stomp.Stomp(options);
 		stompClient.connect();
-		stompClient.on('connected', function() {
+		stompClient.once('connected', function() {
 			new STOMPQueuesManager(stompClient, callback);
 		});
 	} else {
