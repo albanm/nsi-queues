@@ -1,6 +1,6 @@
 {
   "name": "nsi-queues",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Node.js Services Integration - Queues helpers",
   "main": "index.js",
   "directories": {
