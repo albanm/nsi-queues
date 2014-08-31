@@ -103,6 +103,7 @@ stompClient.on('connected', function(){
 	});
 });
 ```
+
 Send messages
 -------------
 
@@ -130,6 +131,7 @@ queuesHelper.inOut('my-queue', 'my message', {header1: 'header1'}, function(err,
 	else console.log('Response received: ' + body);
 });
 ```
+
 Receive messages
 ----------------
 
@@ -155,6 +157,16 @@ queuesHelper.from('my-queue', function(body, headers, responseCallback) {
 	responseCallback(null, responseBody, responseHeaders);
 });
 ```
+
+Deal with errors
+----------------
+
+If a socket error occurs before a connection is established with a broker this error will be returned as the first
+parameter to the callback of the helper's initializer. If an error occurs later it will be emitted as an event by the helper.
+
+Neither nsi-queues nor its underlying libraries will do any reconnect attempt as it would require to execute multiple times the same callback functions in a way that is not explicit enough. Of course you are free to implement your own reconnect policy.
+
+**Opinion of the author:** do not try to implement a complex reconnect policy. Log the connection error, but let it be emitted and crash the process. A process whose main responsability is forwarding messages from and/or to a broker is as good as dead without its connection. Let it crash and use a higher level container (phusion-passenger, forever, etc.) that will automaticaly try to restart and therefore reconnect. Also make sure your incoming requests will be buffered and eventually timed out properly if the down time is too long. If the incoming source is a broker it will do it, if it is HTTP an intelligent web application container like phusion-passenger will do ok.
 
 Control flow
 ------------
