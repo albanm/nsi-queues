@@ -13,10 +13,11 @@ module.exports = function(protocol, connection, callback) {
 	}
 	// case where the amqp connection should be initialized here
 	else if (protocol === 'amqp') {
-		var amqpConnection = amqp.createConnection(connection);
-		amqpConnection.on('ready', function() {
-			new AMQPQueuesManager(amqpConnection, callback);
+		var amqpConnection = amqp.createConnection(connection, {
+			reconnect: false
 		});
+		new AMQPQueuesManager(amqpConnection, callback);
+
 	}
 	// case where a stomp client is given already prepared
 	else if (protocol === 'stomp' && _.deepGet(connection, 'constructor.name') === 'Stomp') {
@@ -33,9 +34,7 @@ module.exports = function(protocol, connection, callback) {
 		}, connection);
 		var stompClient = new stomp.Stomp(options);
 		stompClient.connect();
-		stompClient.on('connected', function() {
-			new STOMPQueuesManager(stompClient, callback);
-		});
+		new STOMPQueuesManager(stompClient, callback);
 	} else {
 		return callback(new Error('NSI Queues helpers failed to recognize the given protocol. Supported: node-amqp connections and stomp-js clients.'));
 	}

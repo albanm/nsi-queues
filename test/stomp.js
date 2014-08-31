@@ -35,6 +35,16 @@ describe('queues helper based on STOMP clients', function() {
 		global.consumer.client.disconnect();
 		stompClientProducer.disconnect();
 	});
+
+	it('should return an error when connection fails', function(callback) {
+		prepareQueues('stomp', {
+			port: 7000
+		}, function(err, helper) {
+			should.exist(err);
+			callback();
+		});
+	});
+
 	it('should have created STOMP queues managers', function() {
 		should.equal(producer.constructor.name, 'STOMPQueuesManager');
 		should.equal(consumer.constructor.name, 'STOMPQueuesManager');
