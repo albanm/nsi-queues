@@ -141,7 +141,7 @@ Expect messages from a queue and acknowledge reception to the broker using **fro
   - from() takes a second optional parameter: a callback function that will be executed once subscription to the broker is effective.
 
 ```js
-queuesHelper.from('my-queue', function(err, body, headers, ackCallback) {
+queuesHelper.from('my-queue', function(body, headers, ackCallback) {
 	// do something with message
 	ackCallback(); // acknowlege reception to the broker
 });
